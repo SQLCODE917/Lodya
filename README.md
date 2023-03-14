@@ -1,6 +1,17 @@
 # Lodya
 ## Monthly dietary meal planning for multiple people
 
+### Build and Run
+
+```
+npm run build
+npm run dev
+```
+
+### Swagger Doc
+
+http://localhost:8000/docs/
+
 ### Assumptions
 A Person subscribes to a month-long Diet.
 The Diet is broken up into phases, like "Fist Week", "Second Week" and "Weeks 3 and 4"
