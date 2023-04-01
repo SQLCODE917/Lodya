@@ -22,12 +22,13 @@ Each Recipie is defined by its Theme Ingredient (a meat or a vegetable).
 So that the person is not bored with the diet, the Theme Ingredients should not repeat.
 Ideally, the Theme Ingredients should not repeat for 2 days.
 A Person also has Preferences which alter the meal: limit on number of desserts, disallowed Ingredients, preferred Ingredients, etc)
+The Diet has rules for what dishes should be had on what days, with a mix of dishes that must be had daily with those that could be chosen from a list.
 
 Multiple People subscribe to this Diet at different times and for different lengths of time.
 
 A Person might not choose to stick to the Diet assiduously - to follow it every day - they can skip arbitrary days.
 In that case, the skipped days do not roll over - they simply get skipped.
-This could be called a Person's Subscription Schedule.
+This could be called a Person's Diet Schedule.
 
 The Meal Planner (>You) needs to create the following:
 - Meal Plan for any given day, today or in the future, with the Persons' info, dishes they need, and preparation instructions for those dishes
@@ -40,14 +41,18 @@ The Meal Planner (>You) needs to create the following:
 Given a Person and today's date, returns all the dishes that could be prepared for them.
 
 Person
-- start date // could be back-dated if the Person wants to start their Subscription not it's Day 1
-- subscription
+- start date // could be back-dated if the Person wants to start their Diet not it's Day 1
+- diet
 
-Subscription
+Recipe
+- theme ingredients
+- meal type // breakfast, lunch/dinner, snack, drink 
+
+Diet
 - duration in days
-- recipes by day // day number -> collection of Recipes
+- recipies by day by category 
 
-Subscription Schedule
+Diet Schedule
 - 7 toggles for days of the week
 
 History
@@ -56,7 +61,12 @@ History
 #### Restrictions
 
 Given a Person and today's date, returns all the restrictions (can't have Theme Ingredient X, Preference for less salt, etc).
-Everyone begins with 1 Restriction - no repeated Theme Ingredients.
+Everyone begins with 1 Restriction - no repeated Theme Ingredients between meals of the day.
+
+Every week there are Week-Specific Dishes - as long as these don't repeat between yesterday and today
+  this is better handled by hard-coding recipes per day
+Within meals, protein doesn't repeat
+Same recipe cannot be had 2 days in a row
 
 
 #### Planner
@@ -85,11 +95,11 @@ Recipe
 * title: String
 * themeIngredients: [ThemeIngredient]
 
-Subscription
+Diet
 * id: String //UUID
 * title: String
 * duration: int // recipesByDay length
-* recipesByDay: [[Recipe]]
+* recipesByDay: [{[Meal]:}]
 
 enum DaysOfTheWeek
 * "SUNDAY"
@@ -97,7 +107,7 @@ enum DaysOfTheWeek
 * ...
 * "SATURDAY"
 
-SubscriptionSchedule
+DietSchedule
 * daysActive: {DaysOfTheWeek: boolean}
 
 HistoryNode
@@ -112,7 +122,7 @@ Person
 * id: String //UUID
 * name: String
 * startDate: "YYYY-MM-DD"
-* subscription: String //Subscription Id
+* dietId: String //UUID
 
 DayPlan:[{[PersonID:String]: [Recipe]}]
 
