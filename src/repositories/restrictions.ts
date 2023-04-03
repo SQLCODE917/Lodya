@@ -49,7 +49,6 @@ export const repetitionWithinMeals = async (
 
   if (repeatedNonRepeatables.length) {
     const weight = 0 - repeatedNonRepeatables.length;
-    console.log(`\tRepetition within meals, weight: ${weight}`);
     return Promise.resolve(weight);
   } else {
     return Promise.resolve(1);
@@ -91,7 +90,6 @@ export const repetitionBetweenDays = async (
 
   if (repeatedNonRepeatables.length) {
     const weight = 0 - repeatedNonRepeatables.length;
-    console.log(`\tRepetition Between Days, weight ${weight}`);
     return Promise.resolve(weight);
   } else {
     return Promise.resolve(1);
@@ -102,9 +100,6 @@ export const recipeQuantityLimit = (currentDietDay: DietDay, meal: Meal) => {
   const daysMeal = currentDietDay.meals[meal];
   if (daysMeal.totalRecipes < daysMeal.recipeIds.length) {
     const weight = daysMeal.totalRecipes - daysMeal.recipeIds.length;
-    console.log(
-      `\trecipeQuantityLimit totalRecipes less than recipeIds like ${weight}`
-    );
     return weight;
   } else if (daysMeal.totalRecipes === 0 && daysMeal.recipeIds.length === 0) {
     return 1;
@@ -112,7 +107,6 @@ export const recipeQuantityLimit = (currentDietDay: DietDay, meal: Meal) => {
     return 1;
   } else {
     const weight = daysMeal.recipeIds.length - daysMeal.totalRecipes;
-    console.log(`\trecipeQuantityLimit else weight ${weight}`);
     return weight;
   }
 };

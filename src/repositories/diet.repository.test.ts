@@ -1,9 +1,33 @@
 import * as DietRepository from "./diet";
-import { dietDay, NullDietDay } from "../data";
+import { dietDay, diets, dietSchedule, NullDietDay } from "../data";
 import { recipesByMeal } from "./recipe";
 import { Meal, MealEnum } from "../types";
 
 describe("Diet Repository", () => {
+  describe("getDiet", () => {
+    it("should return a diet by id", async () => {
+      const firstDiet = diets.diet1;
+      const actualDiet = await DietRepository.getDiet(firstDiet.id);
+      expect(actualDiet).toEqual(firstDiet);
+    });
+    it("should return null if no diet is found", async () => {
+      const actualDiet = await DietRepository.getDiet(
+        "this diet id doesnot exist"
+      );
+      expect(actualDiet).toBeNull();
+    });
+  });
+
+  describe("getDietSchedule", () => {
+    it("should return the Diet Schedule", async () => {
+      const actualDietSchedule = await DietRepository.getDietSchedule(
+        "personId",
+        "dietId"
+      );
+      expect(actualDietSchedule).toEqual(dietSchedule);
+    });
+  });
+
   describe("getDietDayIndex", () => {
     it("should return 0 for same dates", () => {
       const startDateString = "2012-12-12";
@@ -51,7 +75,6 @@ describe("Diet Repository", () => {
         NullDietDay,
         recipes
       );
-      console.log(JSON.stringify(actualDietDay));
       expect(actualDietDay).not.toBeNull();
 
       const meals: Array<Meal> = Object.values(MealEnum);

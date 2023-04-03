@@ -45,7 +45,6 @@ export const getDietDay = async (
     const dietDay = mealsByDay[dietDayIndex];
     return Promise.resolve(dietDay);
   } catch (e) {
-    console.log(`Error getting DietDay for person ${personId}`, e);
     return Promise.reject(null);
   }
 };
@@ -110,17 +109,11 @@ export const knapSack = async (
   currentDietDay: DietDay,
   recipesByMeal: Record<Meal, Array<Recipe>>
 ): Promise<DietDay> => {
-  console.log("\nknapSack");
   const target = targetWeight(currentDietDay);
   const recipesRemaining = getRecipesRemaining(recipesByMeal);
 
   // base cases = we are either full or out of options
   if (target.total <= 0 || recipesRemaining === 0) {
-    console.log(
-      "\tBase Case - Returning currentDietDay",
-      `targetTotal:${target.total}`,
-      `recipesRemaining:${recipesRemaining}`
-    );
     return Promise.resolve(currentDietDay);
   }
 
@@ -133,10 +126,6 @@ export const knapSack = async (
   // strange case - no not full meals found,
   // which should not happen since we already checked the targetWeight
   if (!firstNotFullMeal) {
-    console.log(
-      "\tStrange Case - Returning currentDietDay, firstNotFullMeal:",
-      firstNotFullMeal
-    );
     return Promise.resolve(currentDietDay);
   }
 
@@ -175,14 +164,8 @@ export const knapSack = async (
   );
 
   if (currentMealsValue > alternativeMealsValue) {
-    console.log(
-      `\tcurrentMealsValue (${currentMealsValue}) > alternative (${alternativeMealsValue})`
-    );
     return knapSack(previousDietDay, currentDietDay, recipesByMeal);
   } else {
-    console.log(
-      `\tcurrentMealsValue (${currentMealsValue}) < alternative (${alternativeMealsValue})`
-    );
     return knapSack(
       previousDietDay,
       alternativeCurrentDietDay,
